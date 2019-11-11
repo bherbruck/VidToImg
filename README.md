@@ -1,2 +1,3 @@
 # VidToImg
-python script to convert a video to image files
+
+Python script to convert a video to image files
