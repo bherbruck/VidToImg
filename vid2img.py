@@ -1,7 +1,14 @@
-import os
-import cv2
+from os import path
+from time import sleep
+from cv2 import VideoCapture, imwrite
 
-def capture_images(vidfile, interval=100):
+def capture_images(vidfile, interval=1.0):
+    """Read a video file and convert to images
+    
+    Args:
+        vidfile (str): video file to read
+        interval (float, optional): how often to capture an image from the video in seconds. Defaults to 1.0.
+    """
     vidcap = cv2.VideoCapture(vidfile)
     success, image = vidcap.read()
     if success:
@@ -18,4 +25,6 @@ def capture_images(vidfile, interval=100):
             cv2.imwrite(imgfile, image)
             print("Creating image file: {}".format(imgfile))
             count += 1
+            sleep(interval)
+            
 
