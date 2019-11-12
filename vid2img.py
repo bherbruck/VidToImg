@@ -1,4 +1,4 @@
-from os import path
+from os import path, mkdir
 from time import sleep
 from cv2 import VideoCapture, imwrite
 
@@ -9,22 +9,27 @@ def capture_images(vidfile, interval=1.0):
         vidfile (str): video file to read
         interval (float, optional): how often to capture an image from the video in seconds. Defaults to 1.0.
     """
-    vidcap = cv2.VideoCapture(vidfile)
+    vidcap = VideoCapture(vidfile)
     success, image = vidcap.read()
+    print(success)
     if success:
-        vidname = os.path.splitext(os.path.basename(vidfile))[0]
-        vidpath = os.path.dirname(vidfile)
+        vidname = path.splitext(path.basename(vidfile))[0]
+        vidpath = path.dirname(vidfile)
         imgpath = "{}/{}_images".format(vidpath, vidname)
+        print("Found video at: ".format(vidpath))
         count = 0
-        if not os.path.exists(imgpath):
-            os.mkdir(imgpath)
+        if not path.exists(imgpath):
+            mkdir(imgpath)
             print("Creating directory: {}".format(imgpath))
         while success:
             success, image = vidcap.read()
             imgfile = "{}/{}_{}.jpg".format(imgpath, count, vidname)
-            cv2.imwrite(imgfile, image)
+            imwrite(imgfile, image)
             print("Creating image file: {}".format(imgfile))
             count += 1
             sleep(interval)
+    else:
+        print("Something went wrong... check your file path/name")
             
 
+capture_images("/home/brenn/Videos/eggvid.mp4")
