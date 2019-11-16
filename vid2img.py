@@ -36,7 +36,7 @@ def capture_images(video_file, image_quantity=None):
             os.mkdir(image_dir)
             print("Creating directory: {}".format(image_dir))
 
-        # Loop through images in video capture
+        # Loop through images in video_capture
         while success:
             success, image = video_capture.read()
             # Check if current frame is divisible by frame_interval
