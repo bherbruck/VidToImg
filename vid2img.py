@@ -22,7 +22,7 @@ def capture_images(video_file, image_quantity=None):
         # Get number of frames in the video
         frame_count = int(video_capture.get(cv2.CAP_PROP_FRAME_COUNT))
 
-        # Handle 0 or None values for qty_images
+        # Handle 0 or None values for image_quantity
         if image_quantity is None or image_quantity == 0:
             image_quantity = frame_count
 
@@ -31,7 +31,7 @@ def capture_images(video_file, image_quantity=None):
         count = 0
         frame = 0
 
-        # Create directory for images
+        # Create directory for saving images
         if not os.path.exists(image_dir):
             os.mkdir(image_dir)
             print("Creating directory: {}".format(image_dir))
