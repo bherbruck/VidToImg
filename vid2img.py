@@ -1,6 +1,5 @@
 import os
 import cv2
-import pandas
 
 
 def capture_images(video_file, image_quantity=None):
