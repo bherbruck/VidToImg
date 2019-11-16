@@ -1,52 +1,52 @@
 import os
 import cv2
+import pandas
 
-def capture_images(vidfile, qtyframes=None):
+
+def capture_images(video_file, image_quantity=None):
     """
     Read a video file and convert to images
-
+    
     Args:
         vidfile (str): Video file and path to read
-        frames (int, optional): If not None, divide the video into specified number of images Defaults to None.
+        image_quantity (int, optional): Quantity of images to capture, divides frames equally. Defaults to None.
     """
-    vidcap = cv2.VideoCapture(vidfile)
-    success, image = vidcap.read()
+    video_capture = cv2.VideoCapture(video_file)
+    success, image = video_capture.read()
     if success:
         # Set up file paths
-        vidname = os.path.splitext(os.path.basename(vidfile))[0]
-        vidpath = os.path.dirname(vidfile)
-        imgpath = "{}/{}_images".format(vidpath, vidname)
-        print("Found video at: {}".format(vidpath))
+        video_name = os.path.splitext(os.path.basename(video_file))[0]
+        video_dir = os.path.dirname(video_file)
+        image_dir = "{}/{}_images".format(video_dir, video_name)
+        print("Found video at: {}".format(video_dir))
 
         # Get number of frames in the video
-        framecount = int(vidcap.get(cv2.CAP_PROP_FRAME_COUNT))
+        frame_count = int(video_capture.get(cv2.CAP_PROP_FRAME_COUNT))
 
-        # Handle 0 or None values for frames
-        if qtyframes is None or qtyframes == 0:
-            qtyframes = framecount
+        # Handle 0 or None values for qty_images
+        if image_quantity is None or image_quantity == 0:
+            image_quantity = frame_count
 
         # Divide frames evenly to capture
-        frameinterval = int(framecount / qtyframes)
+        frame_interval = int(frame_count / image_quantity)
         count = 0
         frame = 0
 
-        # Create directory for images 
-        if not os.path.exists(imgpath):
-            os.mkdir(imgpath)
-            print("Creating directory: {}".format(imgpath))
+        # Create directory for images
+        if not os.path.exists(image_dir):
+            os.mkdir(image_dir)
+            print("Creating directory: {}".format(image_dir))
 
         # Loop through images in video capture
         while success:
-            success, image = vidcap.read()
-            # Check if current frame is divisible by frame interval
-            if not qtyframes is None and (frame + 1) % frameinterval == 0:
-                imgfile = "{}/{}_{}.jpg".format(imgpath, vidname, count)
-                cv2.imwrite(imgfile, image)
-                print("\rCreating image file: {}".format(imgfile), end="")
+            success, image = video_capture.read()
+            # Check if current frame is divisible by frame_interval
+            if not image_quantity is None and (frame + 1) % frame_interval == 0:
+                image_file = "{}/{}_{}.jpg".format(image_dir, video_name, count)
+                cv2.imwrite(image_file, image)
+                print("\rCreating image file: {}".format(image_file), end="")
                 count += 1
             frame += 1
-        print("\n{} images created in {}".format(qtyframes, imgpath))
+        print("\n{} images created in {}".format(image_quantity, image_dir))
     else:
         print("Something went wrong... check your file path/name")
-
-
