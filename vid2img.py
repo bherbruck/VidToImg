@@ -9,7 +9,7 @@ def capture_images(video_file, image_quantity=None, scale=1.00):
     Args:
         vidfile (str): Video file and path to read
         image_quantity (int, optional): Quantity of images to capture, divides frames equally. Defaults to None.
-        scale (float, optional): the scaling factor to apply to the image. Defaults to None.
+        scale (float, optional): the scaling factor to apply to the image. Defaults to 1.00.
     """
     video_capture = cv2.VideoCapture(video_file)
     success, image = video_capture.read()
