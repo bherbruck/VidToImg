@@ -2,16 +2,18 @@ import os
 import cv2
 
 
-def capture_images(video_file, image_quantity=None):
+def capture_images(video_file, image_quantity=None, scale=1.00):
     """
     Read a video file and convert to images
     
     Args:
         vidfile (str): Video file and path to read
         image_quantity (int, optional): Quantity of images to capture, divides frames equally. Defaults to None.
+        scale (float, optional): the scaling factor to apply to the image, ((1/3) 0.5, 20). Defaults to None.
     """
     video_capture = cv2.VideoCapture(video_file)
     success, image = video_capture.read()
+    dimensions = image.shape
     if success:
         # Set up file paths
         video_name = os.path.splitext(os.path.basename(video_file))[0]
@@ -23,7 +25,7 @@ def capture_images(video_file, image_quantity=None):
         frame_count = int(video_capture.get(cv2.CAP_PROP_FRAME_COUNT))
 
         # Handle 0 or None values for image_quantity
-        if image_quantity is None or image_quantity == 0:
+        if image_quantity is None or image_quantity == 0 or image_quantity > frame_count:
             image_quantity = frame_count
 
         # Divide frames evenly to capture
@@ -40,12 +42,13 @@ def capture_images(video_file, image_quantity=None):
         while success:
             success, image = video_capture.read()
             # Check if current frame is divisible by frame_interval
-            if not image_quantity is None and (frame + 1) % frame_interval == 0:
+            if success and not image_quantity is None and (frame + 1) % frame_interval == 0:
                 image_file = "{}/{}_{}.jpg".format(image_dir, video_name, count)
-                cv2.imwrite(image_file, image)
+                resized_image = cv2.resize(image, None, fx=scale, fy=scale)
+                cv2.imwrite(image_file, resized_image)
                 print("\rCreating image file: {}".format(image_file), end="")
                 count += 1
             frame += 1
-        print("\n{} images created in {}".format(image_quantity, image_dir))
+        print("\n{} images created in {}".format(count, image_dir))
     else:
         print("Something went wrong... check your file path/name")
