@@ -11,6 +11,7 @@ def capture_images(video_file, image_quantity=None, scale=1.00, square=False, ou
         image_quantity (int, optional): Quantity of images to capture, divides frames equally. Defaults to None.
         scale (float, optional): Scaling factor to apply to the image. Defaults to 1.00.
         square (bool, optional): Todo. Defaults to False.
+        output_dir (str): Todo. Defaults to None.
     """
     video_capture = cv2.VideoCapture(video_file)
     success, image = video_capture.read()
