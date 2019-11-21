@@ -2,11 +2,11 @@ import os
 import cv2
 
 
-def capture_images(video_file, image_quantity=None, scale=1.00, square=False):
+def capture_images(video_file, image_quantity=None, scale=1.00, square=False, output_dir=None):
     """
     Read a video file and convert to images
     
-    Args:\
+    Args:
         vidfile (str): Video file and path to read.
         image_quantity (int, optional): Quantity of images to capture, divides frames equally. Defaults to None.
         scale (float, optional): Scaling factor to apply to the image. Defaults to 1.00.
@@ -19,7 +19,6 @@ def capture_images(video_file, image_quantity=None, scale=1.00, square=False):
         # Set up file paths
         video_name = os.path.splitext(os.path.basename(video_file))[0]
         video_dir = os.path.dirname(video_file)
-        image_dir = "{}/{}_images".format(video_dir, video_name)
         print("Found video at: {}".format(video_dir))
 
         # Get number of frames in the video
@@ -35,6 +34,10 @@ def capture_images(video_file, image_quantity=None, scale=1.00, square=False):
         frame = 0
 
         # Create directory for saving images
+        if output_dir is None:
+            image_dir = "{}/{}_images".format(video_dir, video_name)
+        else:
+            image_dir = output_dir
         if not os.path.exists(image_dir):
             os.mkdir(image_dir)
             print("Creating directory: {}".format(image_dir))
