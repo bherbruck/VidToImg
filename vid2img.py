@@ -46,11 +46,13 @@ def capture_images(video_file, image_quantity=None, scale=1.00, square=False):
             if success and not image_quantity is None and (frame + 1) % frame_interval == 0:
                 image_file = "{}/{}_{}.jpg".format(image_dir, video_name, count)
                 resized_image = cv2.resize(image, None, fx=scale, fy=scale)
+                # Make the image square
                 if square:
                     image_height, image_width, _ = resized_image.shape
                     cropped_start = int((image_width / 2) - (image_height / 2))
                     c = [0,image_height, cropped_start,image_height]
                     resized_image = resized_image[0:image_height, cropped_start:image_height+cropped_start]
+                # Save the image
                 cv2.imwrite(image_file, resized_image)
                 print("\rCreating image file: {}".format(image_file), end="")
                 count += 1
@@ -58,5 +60,3 @@ def capture_images(video_file, image_quantity=None, scale=1.00, square=False):
         print("\n{} images created in {}".format(count, image_dir))
     else:
         print("Something went wrong... check your file path/name")
-
-capture_images("C:/test/vid.mp4", scale=0.1, square=True)
